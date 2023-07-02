@@ -7,23 +7,62 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+class User(Base):
+    __tablename__ = 'user'
+    userID = Column(Integer, primary_key=True)
+    userName = Column(String(250), nullable=False) 
+    firstName  = Column(String(250), nullable=False)
+    lastName = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    password = Column(String(250), nullable=False)
+    
 
-class Address(Base):
-    __tablename__ = 'address'
+class Follower (Base):
+    __tablename__ = 'follower'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    followID = Column(Integer, ForeignKey('user.id'))
+    followerID= Column(Integer, ForeignKey('person.id'))
+
+class Post(Base):
+    __tablename__ = 'post'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    postID = Column(Integer, primary_key=True)
+    userID = Column(Integer, ForeignKey('user.id'))
+    likes = Column(Integer)
+    hashtag = Column(Integer)
+
+class Reels(Base):
+    __tablename__ = 'reels'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    reelID= Column(Integer, primary_key=True)
+    url = Column(String(250))
+    postID = Column(Integer, ForeignKey('post.id'))
+    hashtagreel = Column(Integer)
+
+class Commets(Base):
+    __tablename__ = 'comments'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    CommentID = Column(Integer, primary_key=True)
+    commentText = Column(String(250))
+    authorID = Column(Integer, ForeignKey('user.id'))
+    authorcommentID = Column(Integer, ForeignKey('person.id'))
+    postID = Column(Integer, ForeignKey('post.id'))
+    
+class Engagement(Base):
+    __tablename__ = 'engagement'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    engagementID = Column(Integer, primary_key=True)
+    postID = Column(Integer, ForeignKey('post.id'))
+    likestomyPOST = Column(Integer)
+    commentstomyPOST=  Column(Integer)
+
 
     def to_dict(self):
         return {}
